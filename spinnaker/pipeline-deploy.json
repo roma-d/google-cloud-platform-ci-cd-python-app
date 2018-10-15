@@ -1,0 +1,469 @@
+{
+    "parameterConfig": [], 
+    "executionEngine": "v2", 
+    "updateTs": "1500322920670", 
+    "name": "Deploy", 
+    "triggers": [
+        {
+            "status": [
+                "successful"
+            ], 
+            "account": "gcr", 
+            "repository": "PROJECT/notejam-flask", 
+            "enabled": true, 
+            "pipeline": "61372c70-62af-422f-9565-e1975a758612", 
+            "application": "gceme", 
+            "tag": "v.*", 
+            "registry": "gcr.io", 
+            "organization": "PROJECT", 
+            "type": "docker"
+        }
+    ], 
+    "appConfig": {}, 
+    "limitConcurrent": true, 
+    "keepWaitingPipelines": true, 
+    "lastModifiedBy": "anonymous", 
+    "application": "notejam", 
+    "stages": [
+        {
+            "clusters": [
+                {
+                    "volumeSources": [
+                        {
+                            "configMap": {
+                                "items": [
+                                    {
+                                        "path": "", 
+                                        "key": ""
+                                    }
+                                ], 
+                                "configMapName": ""
+                            }, 
+                            "name": "cloudsql-instance-credentials", 
+                            "defaultPersistentVolumeClaim": {
+                                "readOnly": true, 
+                                "claimName": ""
+                            }, 
+                            "secret": {
+                                "secretName": "cloudsql-instance-credentials"
+                            }, 
+                            "hostPath": {
+                                "path": "/"
+                            }, 
+                            "emptyDir": {
+                                "medium": "DEFAULT"
+                            }, 
+                            "type": "SECRET", 
+                            "persistentVolumeClaim": {
+                                "readOnly": true, 
+                                "claimName": ""
+                            }
+                        }
+                    ], 
+                    "podAnnotations": {}, 
+                    "loadBalancers": [
+                        "notejam-dev"
+                    ], 
+                    "hostNetwork": null, 
+                    "account": "local", 
+                    "restartPolicy": null, 
+                    "securityGroups": [], 
+                    "terminationGracePeriodSeconds": 30, 
+                    "deployment": {
+                        "paused": false, 
+                        "rollbackRevision": null, 
+                        "enabled": true, 
+                        "revisionHistoryLimit": 2, 
+                        "progressRollbackSeconds": null, 
+                        "deploymentStrategy": {
+                            "rollingUpdate": {
+                                "maxSurge": "100%", 
+                                "maxUnavailable": "0%"
+                            }, 
+                            "type": "RollingUpdate"
+                        }, 
+                        "minReadySeconds": 0
+                    }, 
+                    "nodeSelector": {}, 
+                    "stack": "dev", 
+                    "targetSize": 1, 
+                    "securityContext": null, 
+                    "cloudProvider": "kubernetes", 
+                    "interestingHealthProviderNames": [
+                        "KubernetesContainer", 
+                        "KubernetesPod"
+                    ], 
+                    "region": "default", 
+                    "sequence": null, 
+                    "namespace": "default", 
+                    "provider": "kubernetes", 
+                    "strategy": "", 
+                    "application": "notejam", 
+                    "replicaSetAnnotations": {
+                        "deployment.kubernetes.io/desired-replicas": "8", 
+                        "deployment.kubernetes.io/revision": "40", 
+                        "deployment.kubernetes.io/revision-history": "12", 
+                        "deployment.kubernetes.io/max-replicas": "16"
+                    }, 
+                    "events": [], 
+                    "containers": [
+                        {
+                            "envVars": [
+                                {
+                                    "name": "DB_USER", 
+                                    "envSource": {
+                                        "secretSource": {
+                                            "key": "username", 
+                                            "secretName": "cloudsql-db-credentials"
+                                        }
+                                    }
+                                }, 
+                                {
+                                    "name": "DB_PASS", 
+                                    "envSource": {
+                                        "secretSource": {
+                                            "key": "password", 
+                                            "secretName": "cloudsql-db-credentials"
+                                        }
+                                    }
+                                }, 
+                                {
+                                    "name": "DB_NAME", 
+                                    "envSource": {
+                                        "secretSource": {
+                                            "key": "dbname", 
+                                            "secretName": "cloudsql-db-credentials"
+                                        }
+                                    }
+                                }
+                            ], 
+                            "livenessProbe": null, 
+                            "name": "PROJECT-notejam-flask", 
+                            "limits": {
+                                "cpu": null, 
+                                "memory": null
+                            }, 
+                            "imageDescription": {
+                                "account": "gcr", 
+                                "tag": "v.*", 
+                                "registry": "gcr.io", 
+                                "repository": "PROJECT/notejam-flask", 
+                                "fromTrigger": true, 
+                                "imageId": "gcr.io/PROJECT/notejam-flask:v.*"
+                            }, 
+                            "volumeMounts": [], 
+                            "imagePullPolicy": "ALWAYS", 
+                            "readinessProbe": null, 
+                            "requests": {
+                                "cpu": null, 
+                                "memory": null
+                            }, 
+                            "ports": [
+                                {
+                                    "hostIp": null, 
+                                    "protocol": "TCP", 
+                                    "containerPort": 8080, 
+                                    "name": "http", 
+                                    "hostPort": null
+                                }
+                            ]
+                        }, 
+                        {
+                            "envVars": [], 
+                            "livenessProbe": null, 
+                            "args": [], 
+                            "securityContext": {
+                                "privileged": true, 
+                                "runAsUser": 2
+                            }, 
+                            "name": "PROJECT-gce-proxy", 
+                            "limits": {
+                                "cpu": null, 
+                                "memory": null
+                            }, 
+                            "imageDescription": {
+                                "account": "gcr", 
+                                "tag": "1.11", 
+                                "registry": "gcr.io", 
+                                "repository": "PROJECT/gce-proxy", 
+                                "imageId": "gcr.io/PROJECT/gce-proxy:1.11"
+                            }, 
+                            "volumeMounts": [
+                                {
+                                    "readOnly": true, 
+                                    "mountPath": "/secrets/cloudsql", 
+                                    "name": "cloudsql-instance-credentials"
+                                }
+                            ], 
+                            "command": [
+                                "/cloud_sql_proxy", 
+                                "-instances=CONNECTION_NAME=tcp:3306", 
+                                "-credential_file=/secrets/cloudsql/credentials.json"
+                            ], 
+                            "imagePullPolicy": "IFNOTPRESENT", 
+                            "readinessProbe": null, 
+                            "requests": {
+                                "cpu": null, 
+                                "memory": null
+                            }, 
+                            "ports": [
+                                {
+                                    "hostIp": null, 
+                                    "protocol": "TCP", 
+                                    "containerPort": 80, 
+                                    "name": "http", 
+                                    "hostPort": null
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ], 
+            "type": "deploy", 
+            "name": "Deploy App Dev", 
+            "requisiteStageRefIds": [], 
+            "refId": "1"
+        }, 
+        {
+            "cloudProviderType": "kubernetes", 
+            "account": "local", 
+            "container": {
+                "envVars": [], 
+                "command": [
+                    "curl", 
+                    "http://notejam-dev:8080"
+                ], 
+                "args": [], 
+                "volumeMounts": [], 
+                "imageDescription": {
+                    "account": "gcr", 
+                    "tag": "v.*", 
+                    "registry": "gcr.io", 
+                    "repository": "PROJECT/notejam-flask", 
+                    "organization": "PROJECT", 
+                    "fromTrigger": true
+                }
+            }, 
+            "cloudProvider": "kubernetes", 
+            "volumeSources": [], 
+            "namespace": "default", 
+            "requisiteStageRefIds": [
+                "1"
+            ], 
+            "application": "notejam", 
+            "credentials": "local", 
+            "type": "runJob", 
+            "refId": "2", 
+            "name": "Integration Tests"
+        }, 
+        {
+            "name": "Push to Production?", 
+            "failPipeline": true, 
+            "requisiteStageRefIds": [
+                "2"
+            ], 
+            "refId": "3", 
+            "notifications": [], 
+            "type": "manualJudgment", 
+            "judgmentInputs": [], 
+            "instructions": "Do you want to deploy this image to production?"
+        }, 
+        {
+            "clusters": [
+                {
+                    "volumeSources": [
+                        {
+                            "configMap": {
+                                "items": [
+                                    {
+                                        "path": "", 
+                                        "key": ""
+                                    }
+                                ], 
+                                "configMapName": ""
+                            }, 
+                            "name": "cloudsql-instance-credentials", 
+                            "defaultPersistentVolumeClaim": {
+                                "readOnly": true, 
+                                "claimName": ""
+                            }, 
+                            "secret": {
+                                "secretName": "cloudsql-instance-credentials"
+                            }, 
+                            "hostPath": {
+                                "path": "/"
+                            }, 
+                            "emptyDir": {
+                                "medium": "DEFAULT"
+                            }, 
+                            "type": "SECRET", 
+                            "persistentVolumeClaim": {
+                                "readOnly": true, 
+                                "claimName": ""
+                            }
+                        }
+                    ], 
+                    "podAnnotations": {}, 
+                    "loadBalancers": [
+                        "notejam-prod"
+                    ], 
+                    "hostNetwork": null, 
+                    "account": "local", 
+                    "restartPolicy": null, 
+                    "securityGroups": [], 
+                    "terminationGracePeriodSeconds": 30, 
+                    "deployment": {
+                        "paused": false, 
+                        "rollbackRevision": null, 
+                        "enabled": true, 
+                        "revisionHistoryLimit": 2, 
+                        "progressRollbackSeconds": null, 
+                        "deploymentStrategy": {
+                            "rollingUpdate": {
+                                "maxSurge": "100%", 
+                                "maxUnavailable": "0%"
+                            }, 
+                            "type": "RollingUpdate"
+                        }, 
+                        "minReadySeconds": 0
+                    }, 
+                    "nodeSelector": {}, 
+                    "stack": "prod", 
+                    "targetSize": 1, 
+                    "securityContext": null, 
+                    "cloudProvider": "kubernetes", 
+                    "interestingHealthProviderNames": [
+                        "KubernetesContainer", 
+                        "KubernetesPod"
+                    ], 
+                    "region": "default", 
+                    "sequence": null, 
+                    "namespace": "default", 
+                    "provider": "kubernetes", 
+                    "strategy": "", 
+                    "application": "notejam", 
+                    "replicaSetAnnotations": {
+                        "deployment.kubernetes.io/desired-replicas": "4", 
+                        "deployment.kubernetes.io/revision": "31", 
+                        "deployment.kubernetes.io/max-replicas": "8"
+                    }, 
+                    "events": [], 
+                    "containers": [
+                        {
+                            "envVars": [
+                                {
+                                    "name": "DB_USER", 
+                                    "envSource": {
+                                        "secretSource": {
+                                            "key": "username", 
+                                            "secretName": "cloudsql-db-credentials"
+                                        }
+                                    }
+                                }, 
+                                {
+                                    "name": "DB_PASS", 
+                                    "envSource": {
+                                        "secretSource": {
+                                            "key": "password", 
+                                            "secretName": "cloudsql-db-credentials"
+                                        }
+                                    }
+                                }, 
+                                {
+                                    "name": "DB_NAME", 
+                                    "envSource": {
+                                        "secretSource": {
+                                            "key": "dbname", 
+                                            "secretName": "cloudsql-db-credentials"
+                                        }
+                                    }
+                                }
+                            ], 
+                            "livenessProbe": null, 
+                            "securityContext": null, 
+                            "name": "PROJECT-notejam-flask", 
+                            "limits": null, 
+                            "imageDescription": {
+                                "account": "gcr", 
+                                "tag": "v.*", 
+                                "registry": "gcr.io", 
+                                "repository": "PROJECT/notejam-flask", 
+                                "fromTrigger": true, 
+                                "imageId": "gcr.io/PROJECT/notejam-flask:v.*"
+                            }, 
+                            "volumeMounts": [], 
+                            "lifecycle": null, 
+                            "imagePullPolicy": "ALWAYS", 
+                            "readinessProbe": null, 
+                            "requests": null, 
+                            "ports": [
+                                {
+                                    "hostIp": null, 
+                                    "protocol": "TCP", 
+                                    "containerPort": 80, 
+                                    "name": "http", 
+                                    "hostPort": null
+                                }
+                            ]
+                        }, 
+                        {
+                            "envVars": [], 
+                            "livenessProbe": null, 
+                            "args": [], 
+                            "securityContext": {
+                                "privileged": true, 
+                                "runAsUser": 2
+                            }, 
+                            "name": "PROJECT-gce-proxy", 
+                            "limits": {
+                                "cpu": null, 
+                                "memory": null
+                            }, 
+                            "imageDescription": {
+                                "account": "gcr", 
+                                "tag": "1.11", 
+                                "registry": "gcr.io", 
+                                "repository": "PROJECT/gce-proxy", 
+                                "imageId": "gcr.io/PROJECT/gce-proxy:1.11"
+                            }, 
+                            "volumeMounts": [
+                                {
+                                    "readOnly": true, 
+                                    "mountPath": "/secrets/cloudsql", 
+                                    "name": "cloudsql-instance-credentials"
+                                }
+                            ], 
+                            "command": [
+                                "/cloud_sql_proxy", 
+                                "-instances=CONNECTION_NAME=tcp:3306", 
+                                "-credential_file=/secrets/cloudsql/credentials.json"
+                            ], 
+                            "imagePullPolicy": "IFNOTPRESENT", 
+                            "readinessProbe": null, 
+                            "requests": {
+                                "cpu": null, 
+                                "memory": null
+                            }, 
+                            "ports": [
+                                {
+                                    "hostIp": null, 
+                                    "protocol": "TCP", 
+                                    "containerPort": 80, 
+                                    "name": "http", 
+                                    "hostPort": null
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ], 
+            "type": "deploy", 
+            "name": "Deploy App Prod", 
+            "requisiteStageRefIds": [
+                "3"
+            ], 
+            "refId": "4"
+        }
+    ], 
+    "parallel": true
+}

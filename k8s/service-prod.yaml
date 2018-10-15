@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: notejam-prod
+  name: notejam-prod
+  namespace: default
+spec:
+  externalTrafficPolicy: Cluster
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 5000
+  selector:
+    load-balancer-notejam-dev: "true"
+  sessionAffinity: None
+  type: LoadBalancer

@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: notejam-dev
+  name: notejam-dev
+  namespace: default
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 5000
+  selector:
+    load-balancer-notejam-dev: "true"
+  sessionAffinity: None
+  type: ClusterIP

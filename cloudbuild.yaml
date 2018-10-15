@@ -1,0 +1,6 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '--tag=gcr.io/$PROJECT_ID/notejam-flask:$TAG_NAME', '.']
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['run', 'gcr.io/$PROJECT_ID/notejam-flask:$TAG_NAME', 'python', '/usr/src/app/tests.py']
+images: ['gcr.io/$PROJECT_ID/notejam-flask:$TAG_NAME']
