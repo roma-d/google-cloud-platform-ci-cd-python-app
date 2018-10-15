@@ -2,9 +2,9 @@ from datetime import date
 import md5
 
 from flask import render_template, flash, request, redirect, url_for, abort
-from flask.ext.login import (login_user, login_required, logout_user,
+from flask_login import (login_user, login_required, logout_user,
 current_user)
-from flask.ext.mail import Message
+from flask_mail import Message
 
 from notejam import app, db, login_manager, mail
 from notejam.models import User, Note, Pad
